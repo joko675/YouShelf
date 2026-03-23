@@ -46,7 +46,7 @@ public class UserRepository
 
         if (dto.Username == user.Username && passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) == PasswordVerificationResult.Success)
         {
-            return _jwtService.GenerateToken(user.Username);
+            return _jwtService.GenerateToken(user.Username, user.UserId);
         }
         else return "";
 

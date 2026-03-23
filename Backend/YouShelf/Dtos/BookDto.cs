@@ -1,12 +1,10 @@
-﻿namespace YouShelf.Models;
+﻿namespace YouShelf.Dtos;
 
-public class Book
+public class BookDto
 {
-    public int BookId { get; set; }
     public string Title { get; set; }
-    public string Description  { get; set; }
+    public string Description { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string ImageUrl { get; set; }
     public string Review { get; set; }
-    public int UserId { get; set; }
 }

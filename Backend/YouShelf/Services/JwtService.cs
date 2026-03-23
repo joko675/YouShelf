@@ -13,12 +13,13 @@ public class JwtService
     {
         _config = config;
     }
-    public string GenerateToken(string username)
+    public string GenerateToken(string username, int userId)
     {
         string secret = Environment.GetEnvironmentVariable("JWT_SECRET");
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim("UserId", userId.ToString())
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

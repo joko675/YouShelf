@@ -1,8 +1,10 @@
+using Dapper;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Data.Sqlite;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel;
 using System.Data;
 using System.Text;
 using YouShelf.Repositories;
@@ -34,7 +36,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 string connectionString = "Data Source=app.db";
 builder.Services.AddScoped<IDbConnection>(sp => new SqliteConnection(connectionString));
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<BookRepository>();
 builder.Services.AddSingleton<JwtService>();
+SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 
 builder.Services.AddControllers();
 
@@ -44,7 +48,9 @@ using (var connection = new SqliteConnection(connectionString))
 {
     connection.Open();
     var sql = connection.CreateCommand();
-    sql.CommandText = @"CREATE TABLE IF NOT EXISTS Users (Id INTEGER PRIMARY KEY AUTOINCREMENT, Username TEXT NOT NULL UNIQUE, PasswordHash TEXT NOT NULL);";
+    sql.CommandText = @"CREATE TABLE IF NOT EXISTS Users (UserId INTEGER PRIMARY KEY AUTOINCREMENT, Username TEXT NOT NULL UNIQUE, PasswordHash TEXT NOT NULL);";
+    sql.ExecuteNonQuery();
+    sql.CommandText = @"CREATE TABLE IF NOT EXISTS BOOKS (BookId INTEGER PRIMARY KEY AUTOINCREMENT, Title TEXT NOT NULL, Description TEXT, ReleaseDate TEXT, ImageUrl TEXT NOT NULL, Review TEXT, UserId INTEGER NOT NULL);";
     sql.ExecuteNonQuery();
     Console.WriteLine("DB Table created");
 }
