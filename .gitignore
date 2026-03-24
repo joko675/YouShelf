@@ -1,0 +1,9 @@
+.vs
+.git
+.github
+Backend/.vs
+
+Backend/YouShelf/obj/
+Backend/YouShelf/.env
+Backend/YouShelf/app.db
+Backend/YouShelf/bin/
