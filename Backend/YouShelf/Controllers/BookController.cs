@@ -37,4 +37,12 @@ public class BookController : ControllerBase
         int userId = int.Parse(User.FindFirst("UserId").Value);
         return await _bookRepo.AddBook(dto, userId);
     }
+
+    [Authorize]
+    [HttpPut]
+    public async Task<Book> UpdateBook([FromQuery]int bookId, [FromBody]BookDto dto)
+    {
+        int userId = int.Parse(User.FindFirst("UserId").Value);
+        return await _bookRepo.UpdateBook(dto, userId, bookId);
+    }
 }

@@ -51,4 +51,24 @@ public class BookRepository
         });
         return book;
     }
+
+    //Returns updated book info or null when error like bookId wrong
+    public async Task<Book> UpdateBook(BookDto dto, int userId, int bookId)
+    {
+        string sql = @"UPDATE Books SET Title = @Title, Author = @Author, Description = @Description, ReleaseDate = @ReleaseDate, ImageUrl = @ImageUrl, Review = @Review WHERE BookId = @BookId AND UserID = @UserId;
+                       SELECT * FROM Books WHERE BookId = @BookId AND UserID = @UserId;";
+        using var multiResponse = await _db.QueryMultipleAsync(sql, new
+        {
+            Title = dto.Title,
+            Author = dto.Author,
+            Description = dto.Description,
+            ReleaseDate = dto.ReleaseDate.ToString("yyyy-MM-dd"),
+            ImageUrl = dto.ImageUrl,
+            Review = dto.Review,
+            UserId = userId,
+            BookId = bookId
+        });
+        Book book = await multiResponse.ReadFirstOrDefaultAsync<Book>();
+        return book;
+    }
 }

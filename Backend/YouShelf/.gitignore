@@ -1,6 +1,0 @@
-obj/
-.env
-/app.db
-bin/
-../.vs
-../../.vs
