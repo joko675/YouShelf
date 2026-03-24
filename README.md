@@ -46,6 +46,19 @@ Add new book. Returns newly created book info. Require authorization header
 ```http
 Authorization: Bearer <jwt token>
 ```
+#### Parameters
+| Parameter  | Type  			   | Required|
+|------------|---------------------|---------|
+| title      | string              | true    |
+| author     | string              | false   |
+| description| string		   	   | false   |
+| releaseDate| string(yyyy-MM-dd)  | false   |
+| imageUrl   | string              | false   |
+| review     | string              | false   |
+| status     | Status(see below)   | true    |
+
+Status enum - allowed text: READING, READ, PLANNING, CANCELLED
+ImageUrl - default placeholder image
 #### Example request
 ```json
 {
@@ -54,7 +67,8 @@ Authorization: Bearer <jwt token>
   "description": "TestDescription",
   "releaseDate": "2001-01-01",
   "imageUrl": "TestUrl",
-  "review": "TestReview"
+  "review": "TestReview",
+  "status": "READING"
 }
 ```
 #### Example response
@@ -67,6 +81,7 @@ Authorization: Bearer <jwt token>
   "releaseDate": "2001-01-01",
   "imageUrl": "TestUrl",
   "review": "TestReview",
+  "status": "READING"
   "userId": 1
 }
 ```
@@ -83,8 +98,11 @@ Authorization: Bearer <jwt token>
 | author	| string | false	| null	  | Filters books by author	 |
 | limit		| int	 | false	| 10	  | Maximum number of results|
 | offset	| int	 | false	| 0		  | How many results to skip |
+| status    | Status | false    | null    | Book status              |
+
+Status enum - allowed text: READING, READ, PLANNING, CANCELLED
 #### Example request
-`/book?title=Harry+Potter&author=J.K.+Rowling&limit=10&offset=0`
+`/book?title=Harry+Potter&author=J.K.+Rowling&limit=10&offset=0&status=READING`
 #### Example response
 ```json
 [
@@ -96,6 +114,7 @@ Authorization: Bearer <jwt token>
     "releaseDate": "2001-01-01",
     "imageUrl": "TestUrl",
     "review": "TestReview",
+    "status": "READING"
     "userId": 1
   }
 ]
@@ -116,6 +135,7 @@ Authorization: Bearer <jwt token>
   "ReleaseDate": "2024-01-01",
   "ImageUrl": "TestUrl",
   "Review": "TestReview"
+  "status": "READING"
 }
 ```
 #### Example response
@@ -128,6 +148,7 @@ Authorization: Bearer <jwt token>
   "releaseDate": "2024-01-01",
   "imageUrl": "TestUrl",
   "review": "TestReview",
+  "status": "READING"
   "userId": 1
 }
 ```

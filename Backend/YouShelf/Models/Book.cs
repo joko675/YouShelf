@@ -9,5 +9,6 @@ public class Book
     public DateOnly ReleaseDate { get; set; }
     public string ImageUrl { get; set; }
     public string Review { get; set; }
+    public Status Status { get; set; }
     public int UserId { get; set; }
 }

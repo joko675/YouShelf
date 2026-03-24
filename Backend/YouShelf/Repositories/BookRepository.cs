@@ -34,11 +34,18 @@ public class BookRepository
 
         return books;
     }
+    public async Task<IEnumerable<Book>> SearchBookStatus(int userId, Status status, int limit, int offset)
+    {
+        string sql = @"SELECT * FROM BOOKS WHERE UserId = @UserId AND Status LIKE @Status LIMIT @Limit OFFSET @Offset";
+        IEnumerable<Book> books = await _db.QueryAsync<Book>(sql, new { UserId = userId, Status = status, Limit = limit, Offset = offset });
+
+        return books;
+    }
 
     public async Task<Book> AddBook(BookDto dto, int userId)
     {
         Console.WriteLine("adding book");
-        string sql = @"INSERT INTO Books (Title, Author, Description, ReleaseDate, ImageUrl, Review, UserId) VALUES (@Title, @Author, @Description, @ReleaseDate, @ImageUrl, @Review, @UserId); SELECT * from Books where BookId = last_insert_rowid()";
+        string sql = @"INSERT INTO Books (Title, Author, Description, ReleaseDate, ImageUrl, Review, Status, UserId) VALUES (@Title, @Author, @Description, @ReleaseDate, @ImageUrl, @Review, @Status, @UserId); SELECT * from Books where BookId = last_insert_rowid()";
         Book book = await _db.QuerySingleAsync<Book>(sql, new
         {
             Title = dto.Title,
@@ -47,6 +54,7 @@ public class BookRepository
             ReleaseDate = dto.ReleaseDate.ToString("yyyy-MM-dd"),
             ImageUrl = dto.ImageUrl,
             Review = dto.Review,
+            Status = dto.Status,
             UserId = userId
         });
         return book;
@@ -55,7 +63,7 @@ public class BookRepository
     //Returns updated book info or null when error like bookId wrong
     public async Task<Book> UpdateBook(BookDto dto, int userId, int bookId)
     {
-        string sql = @"UPDATE Books SET Title = @Title, Author = @Author, Description = @Description, ReleaseDate = @ReleaseDate, ImageUrl = @ImageUrl, Review = @Review WHERE BookId = @BookId AND UserID = @UserId;
+        string sql = @"UPDATE Books SET Title = @Title, Author = @Author, Description = @Description, ReleaseDate = @ReleaseDate, ImageUrl = @ImageUrl, Review = @Review, Status = @Status WHERE BookId = @BookId AND UserID = @UserId;
                        SELECT * FROM Books WHERE BookId = @BookId AND UserID = @UserId;";
         using var multiResponse = await _db.QueryMultipleAsync(sql, new
         {
@@ -65,6 +73,7 @@ public class BookRepository
             ReleaseDate = dto.ReleaseDate.ToString("yyyy-MM-dd"),
             ImageUrl = dto.ImageUrl,
             Review = dto.Review,
+            Status = dto.Status,
             UserId = userId,
             BookId = bookId
         });
