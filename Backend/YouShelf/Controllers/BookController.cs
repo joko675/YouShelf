@@ -18,11 +18,16 @@ public class BookController : ControllerBase
 
     [Authorize]
     [HttpGet]
-    public async Task<IEnumerable<Book>> GetBooksList()
+    public async Task<IEnumerable<Book>> GetBooksList(string? title, string? author, int? limit, int? offset)
     {
+        limit ??= 10;
+        offset ??= 0;
         int userId = int.Parse(User.FindFirst("UserId").Value);
-        IEnumerable<Book> books = await _bookRepo.GetBookList(userId);
-        return books;
+
+        if (title != null) return await _bookRepo.SearchBookTitle(userId, title, limit.Value, offset.Value);
+        if (author != null) return await _bookRepo.SearchBookAuthor(userId, author, limit.Value, offset.Value);
+
+        return await _bookRepo.GetBookList(userId, limit.Value, offset.Value);
     }
 
     [Authorize]

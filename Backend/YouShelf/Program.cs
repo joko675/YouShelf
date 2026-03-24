@@ -50,7 +50,7 @@ using (var connection = new SqliteConnection(connectionString))
     var sql = connection.CreateCommand();
     sql.CommandText = @"CREATE TABLE IF NOT EXISTS Users (UserId INTEGER PRIMARY KEY AUTOINCREMENT, Username TEXT NOT NULL UNIQUE, PasswordHash TEXT NOT NULL);";
     sql.ExecuteNonQuery();
-    sql.CommandText = @"CREATE TABLE IF NOT EXISTS BOOKS (BookId INTEGER PRIMARY KEY AUTOINCREMENT, Title TEXT NOT NULL, Description TEXT, ReleaseDate TEXT, ImageUrl TEXT NOT NULL, Review TEXT, UserId INTEGER NOT NULL);";
+    sql.CommandText = @"CREATE TABLE IF NOT EXISTS BOOKS (BookId INTEGER PRIMARY KEY AUTOINCREMENT, Title TEXT NOT NULL, Author TEXT, Description TEXT, ReleaseDate TEXT, ImageUrl TEXT NOT NULL, Review TEXT, UserId INTEGER NOT NULL);";
     sql.ExecuteNonQuery();
     Console.WriteLine("DB Table created");
 }

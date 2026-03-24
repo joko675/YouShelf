@@ -21,14 +21,14 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register(UserAuthDto dto)
     {
         int failOrNewId = await _userRepo.CreateUser(dto);
-        if (failOrNewId == 0) return BadRequest("User with this username already exists");
-        else return Ok(failOrNewId);
+        if (failOrNewId == 0) return BadRequest(new {Success = false, UserId = (int?)null, ErrorMessage = "User with this username already exists" });
+        else return Ok(new { Success = true, UserId = failOrNewId, ErrorMessage = (string?)null });
     }
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserAuthDto dto)
     {
         string token = await _userRepo.Login(dto);
-        if (token == "") return BadRequest("Wrong username or password");
-        return Ok(token);
+        if (token == "") return BadRequest(new {Success = false, token = (string?)null, ErrorMessage = "Wrong username or password" });
+        return Ok( new { Success = true, Token = token, ErrorMessage = (string?)null });
     }
 }
