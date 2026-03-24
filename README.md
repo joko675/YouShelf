@@ -1,3 +1,6 @@
+# Backend installation
+## Download newest version of YouShelf backend from releases, unzip and run YouShelf.exe
+
 # YouShelf API Docs
 ## Auth
 
