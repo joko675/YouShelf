@@ -20,6 +20,13 @@ public class BookRepository
 
         return books;
     }
+    public async Task<IEnumerable<Book>> GetBookList(int userId, string title)
+    {
+        string sql = @"SELECT * FROM BOOKS WHERE (UserId = @UserId, Title = @Title)";
+        IEnumerable<Book> books = await _db.QueryAsync<Book>(sql, new { UserId = userId, Title = title });
+
+        return books;
+    }
 
     public async Task<Book> AddBook(BookDto dto, int userId)
     {
@@ -35,7 +42,6 @@ public class BookRepository
             Review = dto.Review,
             UserId = userId
         });
-
         return book;
     }
 }
