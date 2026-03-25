@@ -57,7 +57,7 @@ Authorization: Bearer <jwt token>
 | review     | string              | false   |
 | status     | Status(see below)   | true    |
 
-Status enum - allowed text: READING, READ, PLANNING, CANCELLED
+Status enum - allowed text: READING, READ, PLANNING, CANCELLED<br>
 ImageUrl - default placeholder image
 #### Example request
 ```json
@@ -114,6 +114,7 @@ Status enum - allowed text: READING, READ, PLANNING, CANCELLED
     "releaseDate": "2001-01-01",
     "imageUrl": "TestUrl",
     "review": "TestReview",
+    "status": "READING"
     "userId": 1
   }
 ]
@@ -134,6 +135,7 @@ Authorization: Bearer <jwt token>
   "ReleaseDate": "2024-01-01",
   "ImageUrl": "TestUrl",
   "Review": "TestReview"
+  "status": "READING"
 }
 ```
 #### Example response
@@ -146,6 +148,7 @@ Authorization: Bearer <jwt token>
   "releaseDate": "2024-01-01",
   "imageUrl": "TestUrl",
   "review": "TestReview",
+  "status": "READING"
   "userId": 1
 }
 ```

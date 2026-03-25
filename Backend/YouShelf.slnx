@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="YouShelf/YouShelf.csproj" />
+  <Project Path="YouShelf/YouShelf.csproj">
+    <BuildType Project="Release" />
+  </Project>
 </Solution>

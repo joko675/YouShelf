@@ -57,7 +57,7 @@ Authorization: Bearer <jwt token>
 | review     | string              | false   |
 | status     | Status(see below)   | true    |
 
-Status enum - allowed text: READING, READ, PLANNING, CANCELLED
+Status enum - allowed text: READING, READ, PLANNING, CANCELLED<br>
 ImageUrl - default placeholder image
 #### Example request
 ```json
@@ -81,7 +81,7 @@ ImageUrl - default placeholder image
   "releaseDate": "2001-01-01",
   "imageUrl": "TestUrl",
   "review": "TestReview",
-  "status": "READING"
+  "status": "READING",
   "userId": 1
 }
 ```
@@ -114,7 +114,7 @@ Status enum - allowed text: READING, READ, PLANNING, CANCELLED
     "releaseDate": "2001-01-01",
     "imageUrl": "TestUrl",
     "review": "TestReview",
-    "status": "READING"
+    "status": "READING",
     "userId": 1
   }
 ]
@@ -130,11 +130,11 @@ Authorization: Bearer <jwt token>
 ```json
 {
   "title": "Harry Potter",
-  "Author": "J.K. Rowling",
-  "Description": "TestDescription",
-  "ReleaseDate": "2024-01-01",
-  "ImageUrl": "TestUrl",
-  "Review": "TestReview"
+  "author": "J.K. Rowling",
+  "description": "TestDescription",
+  "releaseDate": "2024-01-01",
+  "imageUrl": "TestUrl",
+  "review": "TestReview",
   "status": "READING"
 }
 ```
@@ -148,7 +148,7 @@ Authorization: Bearer <jwt token>
   "releaseDate": "2024-01-01",
   "imageUrl": "TestUrl",
   "review": "TestReview",
-  "status": "READING"
+  "status": "READING",
   "userId": 1
 }
 ```
