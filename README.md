@@ -98,9 +98,9 @@ Authorization: Bearer <jwt token>
 | author	| string | false	| null	  | Filters books by author	 |
 | limit		| int	 | false	| 10	  | Maximum number of results|
 | offset	| int	 | false	| 0		  | How many results to skip |
-| status    | Status | false    | null    | Book status              |
+| status    | Status | false    | null    | Filter books by status   |
 
-Status enum - allowed text: READING, READ, PLANNING, CANCELLED
+Status enum - allowed text: "READING", "READ", "PLANNING", "CANCELLED"
 #### Example request
 `/book?title=Harry+Potter&author=J.K.+Rowling&limit=10&offset=0&status=READING`
 #### Example response
@@ -120,7 +120,7 @@ Status enum - allowed text: READING, READ, PLANNING, CANCELLED
 ]
 ```
 ### PUT /book
-Updates existing book. User can only update his own books. Returns updated book info. Require authorization header
+Updates existing book. User can only update his own books. Returns updated book info. Require authorization header.
 #### Header 
 ```http
 Authorization: Bearer <jwt token>
@@ -152,3 +152,7 @@ Authorization: Bearer <jwt token>
   "userId": 1
 }
 ```
+### DELETE /book
+Deletes book with given id. User can only delete his own books. Require authorization header.
+#### Example request 
+` /book?bookId=1 `

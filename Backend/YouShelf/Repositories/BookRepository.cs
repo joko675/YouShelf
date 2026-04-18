@@ -64,7 +64,7 @@ public class BookRepository
     public async Task<Book> UpdateBook(BookDto dto, int userId, int bookId)
     {
         string sql = @"UPDATE Books SET Title = @Title, Author = @Author, Description = @Description, ReleaseDate = @ReleaseDate, ImageUrl = @ImageUrl, Review = @Review, Status = @Status WHERE BookId = @BookId AND UserID = @UserId;
-                       SELECT * FROM Books WHERE BookId = @BookId AND UserID = @UserId;";
+                       SELECT * FROM Books WHERE BookId = @BookId AND UserId = @UserId;";
         using var multiResponse = await _db.QueryMultipleAsync(sql, new
         {
             Title = dto.Title,
@@ -79,5 +79,22 @@ public class BookRepository
         });
         Book book = await multiResponse.ReadFirstOrDefaultAsync<Book>();
         return book;
+    }
+    public async Task<bool> DeleteBook(int bookId, int userId)
+    {
+        string sql = @"DELETE FROM Books WHERE BookId = @BookId AND UserId = @UserId;";
+        int rowsAffected = await _db.ExecuteAsync(sql, new
+        {
+            BookId = bookId,
+            UserId = userId
+        });
+        if (rowsAffected == 1)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+
     }
 }

@@ -44,7 +44,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-using (var connection = new SqliteConnection(connectionString))
+    using (var connection = new SqliteConnection(connectionString))
 {
     connection.Open();
     var sql = connection.CreateCommand();
@@ -55,9 +55,9 @@ using (var connection = new SqliteConnection(connectionString))
     Console.WriteLine("DB Table created");
 }
 
-    // Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.
 
-    app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 

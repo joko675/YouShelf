@@ -46,4 +46,13 @@ public class BookController : ControllerBase
         int userId = int.Parse(User.FindFirst("UserId").Value);
         return await _bookRepo.UpdateBook(dto, userId, bookId);
     }
+    [Authorize]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteBook([FromQuery]int bookId)
+    {
+        int userId = int.Parse(User.FindFirst("UserId").Value);
+        bool isSuccess = await _bookRepo.DeleteBook(bookId, userId);
+        if (isSuccess) return Ok("Book deleted");
+        else return BadRequest("Error when deleting book");
+    }
 }
