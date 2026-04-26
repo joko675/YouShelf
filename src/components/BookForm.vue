@@ -13,7 +13,7 @@
     const userDataStore = useUserDataStore();
 
     const previewImgSrc = ref();
-    const releaseDateUnformatted = ref();
+    const releaseDateUnformatted = ref<CalendarDate | null>(null);
     const formData = ref<BookFormDto>({
         id: undefined,
         title: "",
@@ -44,13 +44,15 @@
             releaseDateUnformatted.value = new CalendarDate(year, month, day);
         }
     }
-        
-    const errors = ref<BookFormDto>({
-        title: "",
-        author: "",
-        coverImgPath: "",
-        status: "",
-        releaseDate: ""
+
+
+    type FormErrors = { [K in keyof BookFormDto]: boolean };    
+    const errors = ref<FormErrors>({
+        title: false,
+        author: false,
+        coverImgPath: false,
+        status: false,
+        releaseDate: false,
     });
     
     const statusItems = ref<SelectItem[]>([
@@ -72,21 +74,49 @@
         if (file) {
             previewImgSrc.value = convertFileSrc(file);
             formData.value.coverImgPath = file;
+            errors.value.coverImgPath = false;
+        } else {
+            errors.value.coverImgPath = true;
         }
     }
 
     //Returns true if errors present
     function validateData(): boolean {
         let error = false;
-        for (const field in errors) {
-            if (field === "" || field === null) error = true;
+        for (const field in errors.value) {
+            const formDataField = formData.value[field as keyof BookFormDto];
+            if (field === "releaseDate") {}
+            else if (formDataField === "" || formDataField === null){
+                error = true;
+                errors.value[field as keyof FormErrors] = true;
+            } else {
+                errors.value[field as keyof FormErrors] = false;
+            }
         }
         return error;
     }
+
+    function inputChange(fieldName: string) {
+        console.log("change");
+        const formDataField = formData.value[fieldName as keyof BookFormDto]
+
+        if (formDataField !== "") {
+            errors.value[fieldName as keyof FormErrors] = false;
+        }
+    }
     
-    function convertDateToString() {
-        const stringDate = releaseDateUnformatted.value.toString();
-        formData.value.releaseDate = stringDate;
+    //Returns true if success
+    function convertDateToString(): boolean {
+        const stringDate = releaseDateUnformatted.value?.toString();
+
+        if (stringDate === undefined) {
+            errors.value.releaseDate = true;
+            return false;
+        } else {
+            formData.value.releaseDate = stringDate;
+            errors.value.releaseDate = false;
+            return true;
+        }
     }
 
     async function onSubmit() {
@@ -94,7 +124,7 @@
             console.log("One or more errors");
             return 0;
         }
-        convertDateToString();
+        if (!convertDateToString()) return 0;
 
         if (props.bookId) {
             formData.value.id = props.bookId;
@@ -110,15 +140,15 @@
 <template>
     <div id="main">
     <div class="goBack"><UButton @click='() => router.push("/")' label="Wróć" color="error"></UButton></div>
-    <form v-on:submit.prevent="onSubmit" class="grid grid-cols-1 gap-4" id="form">
+    <form @submit.prevent="onSubmit" class="grid grid-cols-1 gap-4" id="form">
         
         <div class="flex flex-col gap-2">
             <label>Tytuł książki:*</label>
-            <UInput v-model="formData.title" placeholder="Tytuł książki" :color='!errors.title ? "neutral" : "error"' :highlight=true />
+            <UInput v-model="formData.title" placeholder="Tytuł książki" :color='!errors.title ? "neutral" : "error"' :highlight=true @change='inputChange("title")' />
         </div>
         <div class="flex flex-col gap-2">
             <label>Autor książki:*</label>
-            <UInput v-model="formData.author" placeholder="Autor książki" :color='!errors.author ? "neutral" : "error"' :highlight=true />
+            <UInput v-model="formData.author" placeholder="Autor książki" :color='!errors.author ? "neutral" : "error"' :highlight=true @change='inputChange("author")' />
         </div>
         <div class="flex flex-col gap-2">
             <label>Ocena książki:</label>
@@ -127,7 +157,7 @@
         <div class="grid grid-cols-2 gap-2">
             <div class="flex flex-col gap-1">
                 <label>Dodaj okładkę:*</label>
-                <UButton @click="uploadImage" label="Wybierz okładkę" :color='!errors.coverImgPath ? "secondary" : "error"' />
+                <UButton @click='uploadImage()' label="Wybierz okładkę" :color='!errors.coverImgPath ? "secondary" : "error"' />
             </div>
             <img :src="previewImgSrc" id="coverImg" class="col-span-1">
         </div>
@@ -136,8 +166,8 @@
             <USelect v-model="formData.status" :items="statusItems" />
         </div>
         <div class="flex flex-col gap-2">
-            <label>Data wydania:*</label>
-            <UInputDate v-model="releaseDateUnformatted" />
+            <label>Data wydania:</label>
+            <UInputDate v-model="releaseDateUnformatted" @change="convertDateToString" :highlight="true" :color='!errors.releaseDate ? "secondary" : "error"' />
         </div>
             
         <UButton type="submit">{{ props.bookId ? "Zapisz zmiany" : "Dodaj książkę" }}</UButton>
