@@ -1,8 +1,14 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useUserDataStore } from "./UserDataStore";
 
 export const useBookFilterStore = defineStore("BookFilter", () => {
     const selectedStatus = ref("READING");
+    const userDataStore = useUserDataStore();
 
-    return { selectedStatus };
+    const filteredBooks = computed(() => 
+        userDataStore.userData.filter((book) => book.status === selectedStatus.value)
+    )
+
+    return { selectedStatus, filteredBooks };
 });

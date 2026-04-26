@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { RadioGroupItem } from '@nuxt/ui';
     import { ref } from 'vue';
-import { useBookFilterStore } from '../stores/BookFilterStore';
+    import { useBookFilterStore } from '../stores/BookFilterStore';
 
     const bookFilterStore = useBookFilterStore();
     const filterMenuItems = ref<RadioGroupItem[]>([
