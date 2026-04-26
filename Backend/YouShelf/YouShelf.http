@@ -1,6 +1,0 @@
-@YouShelf_HostAddress = http://localhost:5078
-
-GET {{YouShelf_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

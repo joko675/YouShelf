@@ -7,3 +7,13 @@ Backend/YouShelf/obj/
 Backend/YouShelf/.env
 Backend/YouShelf/app.db
 Backend/YouShelf/bin/
+
+old/.vs
+old/.git
+old/.github
+old/Backend/.vs
+
+old/Backend/YouShelf/obj/
+old/Backend/YouShelf/.env
+old/Backend/YouShelf/app.db
+old/Backend/YouShelf/bin/
