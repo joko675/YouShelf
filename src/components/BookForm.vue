@@ -6,14 +6,13 @@
     import { convertFileSrc } from '@tauri-apps/api/core';
     import { useUserDataStore } from '../stores/UserDataStore';
     import { router } from '../router';
-    import { CalendarDate } from '@internationalized/date';
 
     const props = defineProps(['bookId']);
     
     const userDataStore = useUserDataStore();
 
     const previewImgSrc = ref();
-    const releaseDateUnformatted = ref<CalendarDate | null>(null);
+
     const formData = ref<BookFormDto>({
         id: undefined,
         title: "",
@@ -21,7 +20,7 @@
         rating: "",
         coverImgPath: "",
         status: "READING",
-        releaseDate: ""
+        releaseYear: null
     });
 
     //If we are editing already existing book read its info and populate form with it
@@ -35,13 +34,9 @@
             formData.value.coverImgPath = bookInfo.coverImagePathFixed;
             formData.value.rating = bookInfo.rating;
             formData.value.status = bookInfo.status;
-            formData.value.releaseDate = bookInfo.releaseDate;
+            formData.value.releaseYear = bookInfo.releaseYear;
 
             previewImgSrc.value = bookInfo.coverImagePathFixed;
-
-            const [year, month, day] = bookInfo.releaseDate.split("-").map(Number);
-            
-            releaseDateUnformatted.value = new CalendarDate(year, month, day);
         }
     }
 
@@ -50,9 +45,10 @@
     const errors = ref<FormErrors>({
         title: false,
         author: false,
+        rating: false,
         coverImgPath: false,
         status: false,
-        releaseDate: false,
+        releaseYear: false,
     });
     
     const statusItems = ref<SelectItem[]>([
@@ -85,7 +81,8 @@
         let error = false;
         for (const field in errors.value) {
             const formDataField = formData.value[field as keyof BookFormDto];
-            if (field === "releaseDate") {}
+            
+            if (field === "releaseYear" && formDataField === null || field === "rating") {}
             else if (formDataField === "" || formDataField === null){
                 error = true;
                 errors.value[field as keyof FormErrors] = true;
@@ -104,27 +101,12 @@
             errors.value[fieldName as keyof FormErrors] = false;
         }
     }
-    
-    //Returns true if success
-    function convertDateToString(): boolean {
-        const stringDate = releaseDateUnformatted.value?.toString();
-
-        if (stringDate === undefined) {
-            errors.value.releaseDate = true;
-            return false;
-        } else {
-            formData.value.releaseDate = stringDate;
-            errors.value.releaseDate = false;
-            return true;
-        }
-    }
 
     async function onSubmit() {
         if (validateData()) {
             console.log("One or more errors");
             return 0;
         }
-        if (!convertDateToString()) return 0;
 
         if (props.bookId) {
             formData.value.id = props.bookId;
@@ -139,7 +121,6 @@
 </script>
 <template>
     <div id="main">
-    <div class="goBack"><UButton @click='() => router.push("/")' label="Wróć" color="error"></UButton></div>
     <form @submit.prevent="onSubmit" class="grid grid-cols-1 gap-4" id="form">
         
         <div class="flex flex-col gap-2">
@@ -167,7 +148,7 @@
         </div>
         <div class="flex flex-col gap-2">
             <label>Data wydania:</label>
-            <UInputDate v-model="releaseDateUnformatted" @change="convertDateToString" :highlight="true" :color='!errors.releaseDate ? "secondary" : "error"' />
+            <UInput v-model="formData.releaseYear" type="number" placeholder="Rok wydania" :color='!errors.releaseYear ? "neutral" : "error"' :highlight=true @change='inputChange("author")' />
         </div>
             
         <UButton type="submit">{{ props.bookId ? "Zapisz zmiany" : "Dodaj książkę" }}</UButton>
@@ -181,8 +162,5 @@
         max-height: 300px;
         margin-left: auto;
         margin-right: auto;
-    }
-    .goBack {
-        margin-bottom: 10px;
     }
 </style>

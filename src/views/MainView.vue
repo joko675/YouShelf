@@ -6,6 +6,7 @@
 </script>
 <template>
     <div id="main">
+        <UButton @click='() => router.push("bookDetails")'>test</UButton>
         <UButton @click='() => router.push("bookForm")'>Add Book</UButton>
         <div class="flex justify-center items-center">
             <BookFilter />

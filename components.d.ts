@@ -11,6 +11,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BookDetails: typeof import('./src/components/BookDetails.vue')['default']
+    BookFilter: typeof import('./src/components/BookFilter.vue')['default']
     BookForm: typeof import('./src/components/BookForm.vue')['default']
     BookList: typeof import('./src/components/BookList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -20,6 +22,7 @@ declare module 'vue' {
     UCard: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Card.vue')['default']
     UInput: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
     UInputDate: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/InputDate.vue')['default']
+    URadioGroup: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/RadioGroup.vue')['default']
     USelect: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Select.vue')['default']
   }
 }

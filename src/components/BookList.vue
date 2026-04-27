@@ -1,9 +1,7 @@
 <script setup lang="ts">
     import { router } from '../router';
     import { useBookFilterStore } from '../stores/BookFilterStore';
-    import { useUserDataStore } from '../stores/UserDataStore';
 
-    const userDataStore = useUserDataStore();
     const bookFilterStore = useBookFilterStore();
     
 </script>

@@ -26,7 +26,7 @@ export async function readUserData(): Promise<Book[]> {
     return userDataJson;
 }
 
-async function writeUserData() {
+export async function writeUserData() {
     console.log("Writing json file");
     const userDataStore = useUserDataStore();
 
@@ -52,14 +52,13 @@ export async function addNewBookService(dto: BookFormDto) {
             id: newId,
             title: dto.title,
             author: dto.author,
-            releaseDate: dto.releaseDate,
+            releaseYear: dto.releaseYear,
             status: dto.status,
             rating: dto.rating,
             coverImagePathFixed: imagePathFixed
         }
 
         userDataStore.userData.push(newBook);
-        await writeUserData();
         
     } catch (err) {
         console.log("Error when creating new book: "+err);
@@ -95,11 +94,10 @@ export async function editBookService(dto: BookFormDto) {
             coverImagePathFixed: imagePathFixed,
             status: dto.status,
             rating: dto.rating,
-            releaseDate: dto.releaseDate
+            releaseYear: dto.releaseYear
         }
         
         userDataStore.userData[editedBookIndex] = editedBook;
-        writeUserData();
     } catch (err){
         console.log("Error when editing book info: "+err)
     }
