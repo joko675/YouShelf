@@ -44,10 +44,17 @@ export async function addNewBookService(dto: BookFormDto) {
     const newId = await getUniqueId();
 
     try {
-        const imagePath = await saveCoverImg(newId, dto.coverImgPath);
-        if (imagePath === "") return 0;
-
-        const imagePathFixed = await convertFileSrc(imagePath);
+        let imagePath;
+        let imagePathFixed: string;
+        if (dto.coverImgPath === "/blankCover.jpg"){
+            imagePathFixed = dto.coverImgPath;
+        } 
+        else {
+            imagePath = await saveCoverImg(newId, dto.coverImgPath);
+            if (imagePath === "") return 0;
+            imagePathFixed = convertFileSrc(imagePath);
+        }
+        
         const newBook: Book = {
             id: newId,
             title: dto.title,
@@ -76,7 +83,7 @@ export async function editBookService(dto: BookFormDto) {
 
     try {
         //Check if image path is already fixed (if user didnt change it)
-        if (dto.coverImgPath.startsWith("http://asset.localhost")) {
+        if (dto.coverImgPath.startsWith("http://asset.localhost") || dto.coverImgPath ==="/blankCover.jpg") {
             imagePathFixed = dto.coverImgPath;
         } else {
             const imagePath = await saveCoverImg(editedBookId, dto.coverImgPath);

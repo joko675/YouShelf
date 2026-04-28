@@ -26,8 +26,11 @@
 <template>
     
     <UCard>
-        <div class="main flex flex-col gap-2 md:flex-col lg:flex-row 2xl:px-50 xl:px-25 lg:px-4">
-            <div id="left" class="md:w-1/2 flex flex-col">
+        <div class="main flex flex-col gap-5 sm:flex-col lg:flex-row">
+            <div class="lg:w-1/2 flex justify-center md:justify-center lg:justify-end">
+                <img :src="bookDetails.coverImagePathFixed">
+            </div>
+            <div class="lg:w-1/2 flex flex-col">
                 <div id="title">Tytuł: {{ bookDetails?.title }}</div>
                 <div id="author">Autor: {{ bookDetails?.author }}</div>
                 <template v-if="bookDetails.rating">
@@ -37,9 +40,6 @@
                     <div id="rating">Rok wydania: {{ bookDetails.releaseYear }} </div>
                 </template>
                 <URadioGroup :items="filterMenuItems" orientation="horizontal" variant="table" indicator="hidden" v-model="bookDetails.status" class="pt-10"></URadioGroup>
-            </div>
-            <div id="right" class="md:w-1/2 flex items-start">
-                <img :src="bookDetails.coverImagePathFixed">
             </div>
         </div>
     </UCard>
