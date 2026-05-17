@@ -11,7 +11,7 @@
     
     const userDataStore = useUserDataStore();
 
-    const previewImgSrc = ref("/blankCover.jpg");
+    const previewImgSrc = ref("/blankCover.png");
 
     const formData = ref<BookFormDto>({
         id: undefined,
@@ -75,6 +75,11 @@
             errors.value.coverImgPath = true;
         }
     }
+    function deleteImage() {
+      previewImgSrc.value = "/blankCover.png";
+      formData.value.coverImgPath = "";
+      errors.value.coverImgPath = false;
+    }
 
     //Returns true if errors present
     function validateData(): boolean {
@@ -83,7 +88,7 @@
             const formDataField = formData.value[field as keyof BookFormDto];
             
             if (field === "releaseYear" && formDataField === null || field === "rating") {}
-            else if(field === "coverImgPath" && formDataField === "" || formDataField === null) formData.value.coverImgPath = "/blankCover.jpg";
+            else if(field === "coverImgPath" && formDataField === "" || formDataField === null) formData.value.coverImgPath = "/blankCover.png";
             else if (formDataField === "" || formDataField === null){
                 error = true;
                 errors.value[field as keyof FormErrors] = true;
@@ -140,6 +145,7 @@
             <div class="flex flex-col gap-1">
                 <label>Dodaj okładkę:*</label>
                 <UButton @click='uploadImage()' label="Wybierz okładkę" color="secondary" />
+                <UButton label="Usuń okładkę" color="error" @click='deleteImage()'></UButton>
             </div>
             <img :src="previewImgSrc" id="coverImg" class="col-span-1">
         </div>

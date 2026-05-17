@@ -46,7 +46,7 @@ export async function addNewBookService(dto: BookFormDto) {
     try {
         let imagePath;
         let imagePathFixed: string;
-        if (dto.coverImgPath === "/blankCover.jpg"){
+        if (dto.coverImgPath === "/blankCover.png"){
             imagePathFixed = dto.coverImgPath;
         } 
         else {
@@ -83,7 +83,7 @@ export async function editBookService(dto: BookFormDto) {
 
     try {
         //Check if image path is already fixed (if user didnt change it)
-        if (dto.coverImgPath.startsWith("http://asset.localhost") || dto.coverImgPath ==="/blankCover.jpg") {
+        if (dto.coverImgPath.startsWith("http://asset.localhost") || dto.coverImgPath ==="/blankCover.png") {
             imagePathFixed = dto.coverImgPath;
         } else {
             const imagePath = await saveCoverImg(editedBookId, dto.coverImgPath);

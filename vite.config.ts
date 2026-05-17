@@ -8,9 +8,9 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [
-    vue(), 
+    vue(),
     ui({
-      colorMode: false
+      colorMode: true
     })
   ],
 
@@ -37,7 +37,7 @@ export default defineConfig(async () => ({
   },
   build: {
     // This tells Vite/esbuild to support modern JS features
-    target: 'esnext' 
+    target: 'esnext'
   },
   // If you want to be specific about the environment:
   esbuild: {
