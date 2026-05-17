@@ -3,7 +3,7 @@
     import { useBookFilterStore } from '../stores/BookFilterStore';
 
     const bookFilterStore = useBookFilterStore();
-    
+
 </script>
 <template>
     <div id="bookList">
@@ -12,7 +12,7 @@
                 <div class="book">
                     <div class="coverImage"><img :src="book.coverImagePathFixed"></div>
                     <div class="title">{{ book.title }}</div>
-                    <UButton label="Edit" color="neutral" @Click='() => router.push("/bookForm/"+book.id)'></UButton>
+                    <UButton label="Edit" color="neutral" @click.stop='() => router.push("/bookForm/"+book.id)' class="cursor-pointer hover:brightness-120"></UButton>
                 </div>
             </UCard>
         </div>
