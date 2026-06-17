@@ -124,6 +124,13 @@
         router.push("/");
     }
 
+    const handleDeleteBook = async () => {
+      if (!props.bookId) return;
+    
+      await userDataStore.deleteBook(props.bookId);
+      router.push('/');
+    };
+
 </script>
 <template>
     <div id="main">
@@ -157,8 +164,11 @@
             <label>Data wydania:</label>
             <UInput v-model="formData.releaseYear" type="number" placeholder="Rok wydania" :color='!errors.releaseYear ? "neutral" : "error"' :highlight=true @change='inputChange("author")' />
         </div>
-            
-        <UButton type="submit">{{ props.bookId ? "Zapisz zmiany" : "Dodaj książkę" }}</UButton>
+
+        <div id="buttons">
+            <UButton type="button" v-if="props.bookId" color="error" @click="handleDeleteBook">Usuń książkę</UButton>
+            <UButton type="submit">{{ props.bookId ? "Zapisz zmiany" : "Dodaj książkę" }}</UButton>
+        </div>
     </form>
     </div>
 </template>
@@ -169,5 +179,11 @@
         max-height: 300px;
         margin-left: auto;
         margin-right: auto;
+    }
+    #buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
 </style>

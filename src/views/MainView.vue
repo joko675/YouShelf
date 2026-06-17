@@ -13,7 +13,7 @@
 <template>
     <div id="main">
         <div id="buttons">
-            <UButton @click='() => router.push("bookForm")' class="m-1">Add Book</UButton>
+            <UButton @click='() => router.push("bookForm")' class="m-1">Dodaj książkę</UButton>
             <UButton @click='toogle'>Zmień motyw</UButton>
         </div>
         <div class="flex justify-center items-center">

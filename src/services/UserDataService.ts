@@ -72,6 +72,16 @@ export async function addNewBookService(dto: BookFormDto) {
     }
 }
 
+export function deleteBookService(bookId: number) {
+  const userDataStore = useUserDataStore();
+  try {
+    userDataStore.userData = userDataStore.userData.filter(b => Number(b.id) !== Number(bookId));
+    console.log(JSON.stringify(userDataStore.userData));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function editBookService(dto: BookFormDto) {
     if (!dto.id) return 0;
      

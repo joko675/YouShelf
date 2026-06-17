@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { Book, BookFormDto } from "../types/Book";
 import { ref, watch } from "vue";
-import {  addNewBookService, editBookService, readUserData, writeUserData } from "../services/UserDataService";
+import {  addNewBookService, deleteBookService, editBookService, readUserData, writeUserData } from "../services/UserDataService";
 
 export const useUserDataStore = defineStore("userData", () => {
     const userData = ref<Book[]>([]);
@@ -30,6 +30,11 @@ export const useUserDataStore = defineStore("userData", () => {
         await updateUserData();
     }
 
-    return { userData, updateUserData, addBook, editBook, loading }
+    async function deleteBook(bookId: number) {
+      deleteBookService(bookId);
+      await updateUserData();
+    }
+
+    return { userData, updateUserData, addBook, editBook, loading, deleteBook }
 
 })
