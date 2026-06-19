@@ -86,8 +86,19 @@
         let error = false;
         for (const field in errors.value) {
             const formDataField = formData.value[field as keyof BookFormDto];
-            
-            if (field === "releaseYear" && formDataField === null || field === "rating") {}
+            const date = new Date();
+
+          
+            if (field === "releaseYear") {
+              if (formDataField === null) {}
+              if (Number(formDataField) < 0 || Number(formDataField) > date.getFullYear()) {
+                error = true;
+                errors.value[field as keyof FormErrors] = true;
+              } else {
+                  errors.value[field as keyof FormErrors] = false;
+              }
+            }
+            else if (field === "rating") {}
             else if(field === "coverImgPath" && formDataField === "" || formDataField === null) formData.value.coverImgPath = "/blankCover.png";
             else if (formDataField === "" || formDataField === null){
                 error = true;
@@ -111,9 +122,10 @@
     async function onSubmit() {
         if (validateData()) {
             console.log("One or more errors");
+            console.log(errors.value['releaseYear']);
             return 0;
         }
-
+        
         if (props.bookId) {
             formData.value.id = props.bookId;
             await userDataStore.editBook(formData.value);
@@ -162,7 +174,7 @@
         </div>
         <div class="flex flex-col gap-2">
             <label>Data wydania:</label>
-            <UInput v-model="formData.releaseYear" type="number" placeholder="Rok wydania" :color='!errors.releaseYear ? "neutral" : "error"' :highlight=true @change='inputChange("author")' />
+            <UInput v-model="formData.releaseYear" type="number" placeholder="Rok wydania" :color='!errors.releaseYear ? "neutral" : "error"' :highlight=true @change='inputChange("releaseYear")' />
         </div>
 
         <div id="buttons">

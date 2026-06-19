@@ -37,9 +37,13 @@
     {
       "identifier": "fs:allow-exists",
       "allow": [
-        {
-          "path": "$RESOURCE/**"
-        }
+        { "path": "$RESOURCE/**" },
+            { "path": "$EXE" },          
+            { "path": "$EXE/**" },        
+            { "path": "$EXE/*" },       
+          { "path": "$EXE/coverImages/**" },
+        { "path": "**/coverImages/**" },  
+            { "path": "$APPDATA/**" }
       ]
     },
     {
@@ -63,6 +67,17 @@
       "allow": [
         {
           "path": "$RESOURCE/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-remove",
+      "allow": [
+        {
+          "path": "$RESOURCE/**"
+        },
+        {
+          "path": "$APPDATA/**"
         }
       ]
     },

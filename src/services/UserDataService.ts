@@ -1,6 +1,6 @@
 import { path } from "@tauri-apps/api";
-import { resourceDir } from "@tauri-apps/api/path";
-import { copyFile, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { join, resourceDir } from "@tauri-apps/api/path";
+import { copyFile, exists, mkdir, readTextFile, remove, writeTextFile } from "@tauri-apps/plugin-fs";
 import { Book, BookFormDto } from "../types/Book";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { useUserDataStore } from "../stores/UserDataStore";
@@ -76,9 +76,19 @@ export function deleteBookService(bookId: number) {
   const userDataStore = useUserDataStore();
   try {
     userDataStore.userData = userDataStore.userData.filter(b => Number(b.id) !== Number(bookId));
-    console.log(JSON.stringify(userDataStore.userData));
+    deleteCoverImg(bookId);
   } catch (err) {
     console.log(err);
+  }
+}
+
+export async function deleteCoverImg(bookId: number) {
+  console.log("Deleting cover image");
+  console.log(coverImagesDir);
+  let imgExtensions = [".jpg", ".jpeg", ".png", ".webp"];
+  for (const extension of imgExtensions) {
+    const filePath = await join(coverImagesDir ,bookId+extension);
+    if (await exists(filePath)) await remove(filePath);
   }
 }
 
@@ -93,8 +103,11 @@ export async function editBookService(dto: BookFormDto) {
 
     try {
         //Check if image path is already fixed (if user didnt change it)
-        if (dto.coverImgPath.startsWith("http://asset.localhost") || dto.coverImgPath ==="/blankCover.png") {
+        if (dto.coverImgPath.startsWith("http://asset.localhost")) {
             imagePathFixed = dto.coverImgPath;
+        } else if (dto.coverImgPath === "/blankCover.png") {
+          imagePathFixed = dto.coverImgPath;
+          deleteCoverImg(dto.id);
         } else {
             const imagePath = await saveCoverImg(editedBookId, dto.coverImgPath);
             if (imagePath != "") {

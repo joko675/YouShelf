@@ -7,7 +7,7 @@
     const filterMenuItems = ref<RadioGroupItem[]>([
         { label: "Czytane", value: "READING" },
         { label: "Przeczytane", value: "READ" },
-        { label: "Skończone", value: "FINISHED" },
+        { label: "Planowane", value: "PLANNING" },
         { label: "Porzucone", value: "CANCELLED" },
     ]);
 
